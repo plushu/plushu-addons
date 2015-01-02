@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+if [[ -n "$PLUSHU_APP_NAME" ]]; then
+  app=$PLUSHU_APP_NAME
+elif [[ -n "$2" ]]; then
+  app=$2
+  shift
+else
+  echo "Missing app name" >&2
+  exit 1
+fi
+
+app_dir=$PLUSHU_APPS_DIR/$app
+
+# Check if app exists
+if [[ ! -d "$app_dir" ]]; then
+  echo "App not found: $app" >&2
+  exit 1
+fi
+
+addon=$2
+
+# If an addon name was specified
+if [[ -n "$addon" ]]; then
+
+  addon_path=$PLUSHU_APPS_DIR/$app/addons/$addon
+
+  # Remove the addon if it's added
+  if [[ -e "$addon_path" ]]; then
+    PLUSHU_SERVICE_NAME=$addon \
+      PLUSHU_SERVICE_PATH=$PLUSHU_SERVICES_DIR/$addon \
+      "$PLUSHU_ROOT/lib/plushook" remove-addon "$app" "$addon"
+
+  # If the addon isn't already added, add it
+  else
+    echo "App '$app' has no addon '$addon'" >&2
+    exit 1
+  fi
+
+# If no plugin name was specified
+else
+  echo "Missing name of addon to add" >&2
+  exit 1
+fi
