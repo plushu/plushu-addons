@@ -33,9 +33,7 @@ if [[ -n "$addon" ]]; then
 
   # If the addon isn't already added, add it
   else
-    PLUSHU_SERVICE_NAME=$addon \
-      PLUSHU_SERVICE_PATH=$PLUSHU_SERVICES_DIR/$addon \
-      "$PLUSHU_ROOT/lib/plushook" add-addon "$app" "$addon"
+    "$PLUSHU_ROOT/lib/plushook" add-addon "$app" "$addon"
   fi
 
 # If no plugin name was specified

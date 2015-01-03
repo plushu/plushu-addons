@@ -25,12 +25,22 @@ addon=$2
 if [[ -n "$addon" ]]; then
 
   addon_path=$PLUSHU_APPS_DIR/$app/addons/$addon
+  service_path=$PLUSHU_SERVICES_DIR/$addon
+  upgrade_script=$service_path/upgrade
 
-  # Remove the addon if it's added
+  # If this app has this addon
   if [[ -e "$addon_path" ]]; then
-    "$PLUSHU_ROOT/lib/plushook" remove-addon "$app" "$addon"
+    # And this addon can be upgraded
+    if [[ -x "$upgrade_script" ]]; then
+      "$PLUSHU_ROOT/lib/plushook" upgrade-addon "$app" "$addon"
 
-  # If the addon isn't already present
+    # If this addon doesn't have an "upgrade" executable
+    else
+      echo "Service '$addon' has no upgrade operation" >&2
+      exit 1
+    fi
+
+  # If the addon isn't already added
   else
     echo "App '$app' has no addon '$addon'" >&2
     exit 1
@@ -38,6 +48,6 @@ if [[ -n "$addon" ]]; then
 
 # If no plugin name was specified
 else
-  echo "Missing name of addon to remove" >&2
+  echo "Missing name of addon to upgrade" >&2
   exit 1
 fi

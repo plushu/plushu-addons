@@ -5,8 +5,7 @@ addons_dir=$PLUSHU_APPS_DIR/$1/addons
 
 # for every addon in the destroying app's addons
 for addon_path in "$addons_dir"/*; do
-  # delete it
+  # remove it first
   addon=${addon%$addon_dir/}
-  PLUSHU_SERVICE_NAME=$addon PLUSHU_SERVICE_PATH=$PLUSHU_SERVICES_DIR/$addon \
-    "$PLUSHU_ROOT/lib/plushook" remove-addon $app $addon
+  "$PLUSHU_ROOT/lib/plushook" remove-addon $app $addon
 done
