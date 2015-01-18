@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
-
-service_path=$PLUSHU_SERVICES_DIR/$2
-
-PLUSHU_SERVICE_NAME=$2 PLUSHU_SERVICE_PATH=$service_path \
-  "$service_path/upgrade" "$PLUSHU_APPS_DIR/$1/addons/$2" "$3"

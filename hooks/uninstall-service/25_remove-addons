@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+service=$1
+
+# For instances where a glob has no matches we want an empty list
+shopt -s nullglob
+
+# for every app with an addon for this service
+for addon_dir in "$PLUSHU_APPS_DIR"/*/"addons/$service"; do
+  # remove it first
+  app_dir=${addon_dir%/addons/$service}
+  app=${app_dir##*/}
+  "$PLUSHU_ROOT/lib/plushook" remove-addon "$app" "$service"
+done

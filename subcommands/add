@@ -33,7 +33,7 @@ if [[ -n "$addon" ]]; then
 
   # If the addon isn't already added, add it
   else
-    "$PLUSHU_ROOT/lib/plushook" add-addon "$app" "$addon"
+    "$PLUSHU_ROOT/lib/plushook" add-addon "$app" "$addon" "$3"
   fi
 
 # If no plugin name was specified
@@ -41,5 +41,3 @@ else
   echo "Missing name of addon to add" >&2
   exit 1
 fi
-
-

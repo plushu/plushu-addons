@@ -3,9 +3,12 @@ set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
 
 addons_dir=$PLUSHU_APPS_DIR/$1/addons
 
+# For instances where a glob has no matches we want an empty list
+shopt -s nullglob
+
 # for every addon in the destroying app's addons
 for addon_path in "$addons_dir"/*; do
   # remove it first
-  addon=${addon%$addon_dir/}
-  "$PLUSHU_ROOT/lib/plushook" remove-addon $app $addon
+  addon=${addon%%*/}
+  "$PLUSHU_ROOT/lib/plushook" remove-addon "$app" "$addon"
 done
