@@ -25,20 +25,10 @@ addon=$2
 if [[ -n "$addon" ]]; then
 
   addon_path=$PLUSHU_APPS_DIR/$app/addons/$addon
-  service_path=$PLUSHU_SERVICES_DIR/$addon
-  upgrade_script=$service_path/upgrade
 
   # If this app has this addon
   if [[ -e "$addon_path" ]]; then
-    # And this addon can be upgraded
-    if [[ -x "$upgrade_script" ]]; then
-      "$PLUSHU_ROOT/lib/plushook" upgrade-addon "$app" "$addon"
-
-    # If this addon doesn't have an "upgrade" executable
-    else
-      echo "Service '$addon' has no upgrade operation" >&2
-      exit 1
-    fi
+    "$PLUSHU_ROOT/lib/plushook" upgrade-addon "$app" "$addon"
 
   # If the addon isn't already added
   else
