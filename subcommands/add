@@ -25,15 +25,21 @@ addon=$2
 if [[ -n "$addon" ]]; then
 
   addon_path=$PLUSHU_APPS_DIR/$app/addons/$addon
+  service_path=$PLUSHU_SERVICES_DIR/$addon
 
   # Print an error if the addon is already present
   if [[ -e "$addon_path" ]]; then
     echo "App '$app' already has addon '$addon'" >&2
     exit 1
 
-  # If the addon isn't already added, add it
-  else
+  # If the service exists and isn't already added, add it
+  elif [[ -d "$service_path" ]]; then
     "$PLUSHU_ROOT/lib/plushook" add-addon "$app" "$addon" "$3"
+
+  # If there's no service by the given name
+  else
+    echo "Service '$addon' is not installed" >&2
+    exit 1
   fi
 
 # If no plugin name was specified
