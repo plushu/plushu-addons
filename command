@@ -17,4 +17,6 @@ fi
 
 app_dir=$PLUSHU_APPS_DIR/$app
 
-ls -1 "$app_dir/addons"
+if [[ -d "$app_dir/addons" ]]; then
+  ls -1 "$app_dir/addons"
+fi
